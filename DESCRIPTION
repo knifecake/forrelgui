@@ -1,0 +1,20 @@
+Package: forrelgui
+Type: Package
+Title: Exclusion Power GUI for the forrel package
+Version: 0.1.0
+Author: Elias Hernandis
+Maintainer: Elias Hernandis <eliashernandis@gmail.com>
+Description: Graphical user interface for the exclusionPower function in the
+    forrel package which includes easy loading/saving of projects.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    forrel (>= 1.0.1),
+    gWidgets2 (>= 1.0.8),
+    gWidgets2tcltk (>= 1.0.6),
+    pedtools (>= 0.9.5),
+    tkrplot (>= 0.0.24)
+RoxygenNote: 7.1.1
+Suggests: 
+    poibin (>= 1.5)
