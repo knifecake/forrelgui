@@ -2,7 +2,7 @@ read_database <- function(filename, format = c('ladder', 'list'), ...) {
   if (format == 'list') {
     read_database_list(filename, ...)
   } else if (format == 'ladder') {
-    read_database_ladder(filename, ...)
+    ladder_to_list(read_database_ladder(filename, ...))
   } else {
     stop("Allele database format not supported")
   }
@@ -110,40 +110,26 @@ normalize <- function(df) {
     row.names = rownames(df))
 }
 
-#' Convert a \code{\link{freqt}} object to the pedtools \code{locusAttributes}
-#' format.
-#'
-#' This function is useful for loading the allele frequency databases found in
-#' this package into pedtools or other pedsuite packages which use the pedtools
-#' package such as forrel.
-#'
-#' @param df a dataframe in allelic ladder format
-#' @return a \code{pedtools}-compatible list of lists following the
-#'   \code{locusAttributes} definition
-#'
-#' @examples
-#' library(pedtools)
-#' p <- nuclearPed(1)
-#' p <- setMarkers(p, locusAttributes = to_pedtools_locusAttributes(ft_nist_african_american))
-#'
-#' @seealso \code{\link[pedtools]{marker_attach}}
-#'
-#' @export
-database_to_pedtools_locusAttributes <- function(x, scale = TRUE) {
-  ms <- markers(x)
+
+list_to_ladder <- function(lst) {
+  all_alleles <- unique(unlist(lapply(lst, function(m) names(m))))
   
-  x <- normalize(x)
-  
-  lapply(ms, function(m) {
-    list(alleles = alleles(x, m),
-         afreq = as.numeric(x[alleles(x, m), m]),
-         name = m)
-  })
+  as.data.frame(lapply(lst, function(marker) {
+    unlist(lapply(all_alleles, function(allele) {
+      f <- c()
+      if (allele %in% names(marker)) {
+        f[allele] <- marker[[allele]]
+      } else {
+        f[allele] <- NA
+      }
+      f
+    }))
+  }))
 }
 
-database_description <- function(df) {
-  if (is.null(df))
-    "No database loaded"
-  else
-    paste0("Database with ", ncol(df), " markers")
+ladder_to_list <- function(ladder) {
+  lapply(as.list(ladder), function(m) { 
+    names(m) <- rownames(ladder)
+    m[!is.na(m)]
+  })
 }

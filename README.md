@@ -16,7 +16,6 @@ Once you have `devtools` you may install `forrelgui` by pasting the
 following into an R interactive session:
 
 ``` r
-install.packages("forrel")
 devtools::install_github("knifecake/forrelgui")
 ```
 
@@ -33,11 +32,10 @@ epGUI()
 ## TODOs
 
   - [x] Load and save projects as `.Rdata` files
-  - [ ] Load familias using `readFam`
+  - [x] Load familias using `readFam`
   - [x] Load and plot pedigrees
   - [x] Select individuals available for genotyping
-      - [ ] Decide if the shown checkboxes should be the intersection of
-        ids for both pedigrees
+      - [x] Filter IDs so that only those that are possible are shown
   - [x] Load and preview frequency databases
       - [ ] Set a minimum width for columns
       - [ ] Auto-detect database format
@@ -51,9 +49,14 @@ epGUI()
       - [ ] Show progress during calculation by running one marker at a
         time
       - [x] Display results in a new tab and focus it
+      - [ ] Parallelize calculation by spreading different markers to
+        different cores (look into vectorization?)
+      - [ ] Show a warning if the current results tab is stale
   - [ ] Come up with examples for testing
       - [x] Paternity
-      - [ ] Paternity with reference profiles
+      - [x] Paternity with reference profiles
+      - [x] Familias .fam file with pedigrees
+      - [ ] Familias .fam file with frequency database
       - [ ] A large frequency database
       - [ ] Mutations to showcase mutation models
   - [ ] Make testing examples loadable to demonstrate the program

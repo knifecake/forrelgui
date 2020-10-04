@@ -3,10 +3,15 @@ mk_menu_bar <- function() {
     File = list(
       gWidgets2::gaction('About epGUI',
                          handler = about_epgui_handler),
+      gWidgets2::gseparator(),
       gWidgets2::gaction('Open project...',
                          handler = open_project_handler),
       gWidgets2::gaction('Save project...',
                          handler = save_project_handler),
+      gWidgets2::gseparator(),
+      gWidgets2::gaction('Open Familias .fam file...',
+                         handler = open_familias_handler),
+      gWidgets2::gseparator(),
       gWidgets2::gaction('Quit',
                          handler = function(h) gWidgets2::dispose(gui$main_window))
     )
@@ -44,6 +49,34 @@ open_project_handler <- function(h) {
   filename <- gWidgets2::gfile(text = "Choose project file...",
                               type = "open")
   load(filename, envir = globalenv())
-  refresh_pedigrees()
-  apply_database()
+  redraw_pedigrees()
+  update_database_description(get_database())
+  update_genotypes_description(get_genotypes())
+  update_available_checkboxes(options = get_candidate_available_ids(),
+                              selected = get_available())
+}
+
+open_familias_handler <- function(h) {
+  filename <- gWidgets2::gfile(text = 'Choose Familias .fam file...',
+                               type = 'open')
+  
+  # read .fam file and extract data
+  out <- forrel::readFam(filename, verbose = FALSE)
+  claim_ped <- out[[1]]
+  true_ped <- out[[2]]
+  db <- pedtools::getFreqDatabase(claim_ped, format = 'list')
+  genotypes <- pedtools::getAlleles(claim_ped)
+  
+  # update the model
+  set_claim_ped(claim_ped)
+  set_true_ped(true_ped)
+  set_database(db)
+  set_genotypes(genotypes)
+  
+  # update the UI
+  redraw_pedigrees()
+  update_database_description(get_database())
+  update_genotypes_description(get_genotypes())
+  update_available_checkboxes(options = get_candidate_available_ids(),
+                              selected = get_available())
 }

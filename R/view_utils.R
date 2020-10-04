@@ -1,3 +1,26 @@
+df_modal_view <- function(df, title = "Preview") {
+  if (!is.data.frame(df)) return()
+  
+  # round frequencies for better display
+  df <- df_round(df, digits = 3)
+  
+  # substitute NA values for a string, since gtable does not understand them
+  df <- df_nas_to_string(df)
+  
+  w <- gWidgets2::gwindow(title = title,
+                          width = 700,
+                          height = 400,
+                          visible = FALSE,
+                          parent = gui$main_window)
+  t <- gWidgets2::gtable(df, container = w)
+  
+  gWidgets2::size(t) <- list(
+    column.widths = replicate(length(colnames(df)), 10 * max(sapply(colnames(df), nchar)))
+  )
+  
+  gWidgets2::visible(w) <- TRUE
+}
+
 #' File chooser UI component
 #'
 #' @param label text in the label
@@ -10,17 +33,17 @@
 #'
 file_chooser <- function(label = "", text = "", container = NULL, handler = print, ...) {
   chooser <- gWidgets2::ggroup(container = container)
-
+  
   g_label <- gWidgets2::glabel(label, container = chooser, width = 100)
   gWidgets2::size(g_label) <- list(width = 30)
-
+  
   gWidgets2::gbutton(text, handler = function(h) {
     filename <- gWidgets2::gfile(label, ...)
     
     # only call the handler if the user actually chose a file
-    if (nchar(filename) > 0)
+    if (isTruthy(filename))
       handler(filename)
   }, container = chooser)
-
+  
   chooser
 }
