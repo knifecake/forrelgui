@@ -32,7 +32,7 @@ epGUI()
 ## TODOs
 
   - [x] Load and save projects as `.Rdata` files
-  - [x] Load familias using `readFam`
+  - [x] Load Familias using `readFam`
   - [x] Load and plot pedigrees
   - [x] Select individuals available for genotyping
       - [x] Filter IDs so that only those that are possible are shown
@@ -43,7 +43,7 @@ epGUI()
       - [ ] Auto-detect reference profile formats
   - [x] Pass a project file to `epGUI` to open it directly
   - [ ] Marker settings table
-      - [ ] Exclude markers from calculation
+      - [x] Exclude markers from calculation
       - [ ] Set mutation models
   - [x] Compute EP
       - [ ] Show progress during calculation by running one marker at a
@@ -59,6 +59,8 @@ epGUI()
       - [ ] Familias .fam file with frequency database
       - [ ] A large frequency database
       - [ ] Mutations to showcase mutation models
+      - [ ] Examples from the GHEP exercise
+  - [ ] Make examples available directly in the program
   - [ ] Make testing examples loadable to demonstrate the program
   - [ ] Project settings (file input formats, allele rounding / rogue
     alleles)
@@ -69,4 +71,4 @@ epGUI()
 ## LICENSE
 
 This project is licensed under the MIT license. See the `LICENSE` file
-for details
+for details.

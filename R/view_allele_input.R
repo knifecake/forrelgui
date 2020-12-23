@@ -33,6 +33,7 @@ database_handler <- function(filename) {
   db <- read_database(filename, format = 'ladder')
   set_database(db)
   update_database_description(get_database())
+  update_markers_tab()
 }
 
 update_database_description <- function(db) {
@@ -58,7 +59,6 @@ update_genotypes_description <- function(genotypes) {
   if (!isTruthy(genotypes)) {
     gWidgets2::svalue(gui$genotypes_description) <- 'No reference profiles loaded.'
   } else {
-    print(genotypes)
     gWidgets2::svalue(gui$genotypes_description) <-
       paste0('Reference profiles loaded for ',
              paste0(get_genotyped_labels(), collapse = ', '),

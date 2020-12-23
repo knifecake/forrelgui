@@ -47,13 +47,14 @@ save_project_handler <- function(h) {
 
 open_project_handler <- function(h) {
   filename <- gWidgets2::gfile(text = "Choose project file...",
-                              type = "open")
-  load(filename, envir = globalenv())
+                              type = "open", filter=c("Rdata"))
+  load_project_file(filename)
   redraw_pedigrees()
   update_database_description(get_database())
   update_genotypes_description(get_genotypes())
   update_available_checkboxes(options = get_candidate_available_ids(),
                               selected = get_available())
+  update_markers_tab()
 }
 
 open_familias_handler <- function(h) {
@@ -61,17 +62,24 @@ open_familias_handler <- function(h) {
                                type = 'open')
   
   # read .fam file and extract data
-  out <- forrel::readFam(filename, verbose = FALSE)
-  claim_ped <- out[[1]]
-  true_ped <- out[[2]]
-  db <- pedtools::getFreqDatabase(claim_ped, format = 'list')
-  genotypes <- pedtools::getAlleles(claim_ped)
-  
-  # update the model
-  set_claim_ped(claim_ped)
-  set_true_ped(true_ped)
-  set_database(db)
-  set_genotypes(genotypes)
+  tryCatch({
+    out <- forrel::readFam(filename, verbose = FALSE)
+    claim_ped <- out[[1]]
+    true_ped <- out[[2]]
+    db <- pedtools::getFreqDatabase(claim_ped, format = 'list')
+    genotypes <- pedtools::getAlleles(claim_ped)
+    
+    # update the model
+    set_claim_ped(claim_ped)
+    set_true_ped(true_ped)
+    set_database(db)
+    set_genotypes(genotypes)
+  }, error = function(e) {
+    gWidgets2::gmessage('It looks like the provided file was not a valid Familias .fam file.',
+                        title = 'Could not open file',
+                        icon = 'error',
+                        parent = gui$main_window)
+  })
   
   # update the UI
   redraw_pedigrees()
@@ -79,4 +87,5 @@ open_familias_handler <- function(h) {
   update_genotypes_description(get_genotypes())
   update_available_checkboxes(options = get_candidate_available_ids(),
                               selected = get_available())
+  update_markers_tab()
 }

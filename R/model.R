@@ -15,6 +15,9 @@ empty_model <- function() {
     # pedtools::getFreqDatabase(x, format = 'list')
     database = NULL,
     
+    # a data frame with three columns and one row per marker
+    marker_settings = NULL,
+    
     # an allele matrix, in the format returned by pedtools::getAlleles
     genotypes = NULL,
     
@@ -74,10 +77,13 @@ apply_genotypes <- function() {
   NULL
 }
 
-get_database <- function() {
+get_database <- function(mode = 'ladder') {
   if (!isTruthy(model$database)) return(NULL)
   
-  list_to_ladder(model$database)
+  if (mode == 'ladder')
+    list_to_ladder(model$database)
+  else
+    model$database
 }
 
 set_database <- function(db) {
@@ -86,6 +92,7 @@ set_database <- function(db) {
   model$database <- db
   
   apply_locus_attributes()
+  init_marker_settings()
   
   NULL
 }
@@ -121,6 +128,37 @@ set_available <- function(available) {
   model$available <- available
 
   NULL  
+}
+
+init_marker_settings <- function() {
+  markers <- names(get_database(mode = 'list'))
+  
+  model$marker_settings <- data.frame(t(sapply(markers, function(m) list(
+    'Use in calculation?' = TRUE,
+    'Mutations' = 'Auto'
+  ))), check.names = FALSE)
+  
+  NULL
+}
+
+get_marker_settings <- function() {
+  if (!isTruthy(model$marker_settings)) init_marker_settings()
+  
+  model$marker_settings
+}
+
+set_marker_settings <- function(settings, marker = NULL, name = NULL) {
+  # apply just one setting to one marker
+  if (!is.null(marker) && !is.null(name)) {
+    model$marker_settings[marker, name] <- settings
+    return(NULL);
+  }
+  
+  if (!isTruthy(settings)) return(NULL);
+  
+  model$marker_settings <- settings
+  
+  NULL
 }
 
 clean_available <- function() {
@@ -160,4 +198,10 @@ get_candidate_available_ids <- function() {
     intersect(custom_ped_labels(model$claim_ped), custom_ped_labels(model$true_ped)),
     get_genotyped_labels()
   )
+}
+
+get_selected_markers <- function() {
+  ms = get_marker_settings()
+  
+  rownames(ms[ms[, 1] == TRUE, ])
 }

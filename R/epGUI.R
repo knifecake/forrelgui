@@ -12,25 +12,10 @@ epGUI <- function(save_file = NULL) {
   mk_env()
   
   # if we were called with a save_file, load it
-  if (!is.null(save_file)) load(save_file, envir = globalenv())
+  if (isTruthy(save_file)) load_project_file(save_file)
 
   # create the GUI
   main_view()
-}
-
-calculate_ep <- function() {
-  if (is.null(model$claim_ped) || is.null(model$true_ped)) return()
-  
-  model$result <- NULL
-  
-  model$result <- forrel::exclusionPower(
-    claimPed = model$claim_ped,
-    truePed = model$true_ped, 
-    ids = model$available,
-    verbose = FALSE
-  )
-  
-  results_tab_view()
 }
 
 mk_env <- function() {
@@ -39,4 +24,14 @@ mk_env <- function() {
   
   model <- empty_model()
   return()
+}
+
+load_project_file <- function(path) {
+  tryCatch({
+    load(path, envir = globalenv())
+  }, error = function(e) {
+    gWidgets2::gmessage('It looks like the provided file was not an epGUI project file.',
+                        title = 'Could not load project',
+                        icon = 'error', parent = gui$main_window)
+  })
 }
