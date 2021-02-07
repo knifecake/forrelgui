@@ -15,6 +15,9 @@ empty_model <- function() {
     # pedtools::getFreqDatabase(x, format = 'list')
     database = NULL,
     
+    # a list containing global settings
+    settings = NULL,
+    
     # a data frame with three columns and one row per marker
     marker_settings = NULL,
     
@@ -169,6 +172,27 @@ set_all_mutations <- function(value) {
 
 clean_available <- function() {
   model$available <- intersect(get_available(), get_candidate_available_ids())
+}
+
+get_settings <- function() {
+  if (!isTruthy(model$settings)) {
+    model$settings = list(maxExactL = Inf, nsim = 1000)
+  }
+  
+  model$settings
+}
+
+set_settings <- function(exactMaxL = NULL, nsim = NULL) {
+  # make sure settings are initialized
+  get_settings()
+  
+  if (isTruthy(exactMaxL)) {
+    model$settings$exactMaxL <- as.numeric(exactMaxL)
+  }
+  
+  if (isTruthy(nsim)) {
+    model$settings$nsim <- as.numeric(nsim)
+  }
 }
 
 #' Determines whether the exclusion power can be calculated

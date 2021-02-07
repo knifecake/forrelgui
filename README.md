@@ -62,7 +62,7 @@ epGUI()
     -   [ ] Examples from the GHEP exercise
 -   [x] Make examples available directly in the program
 -   [x] Make testing examples loadable to demonstrate the program
--   [ ] Project settings (file input formats, allele rounding / rogue
+-   [x] Project settings (file input formats, allele rounding / rogue
     alleles)
 -   [ ] Website with help pages?
 -   [ ] Save report?

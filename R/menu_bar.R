@@ -12,6 +12,8 @@ mk_menu_bar <- function() {
       gWidgets2::gaction('Open Familias .fam file...',
                          handler = open_familias_handler),
       gWidgets2::gseparator(),
+      gWidgets2::gaction('Project settings', handler = open_settings_handler),
+      gWidgets2::gseparator(),
       gWidgets2::gaction('Quit',
                          handler = function(h) gWidgets2::dispose(gui$main_window))
     ),
@@ -107,6 +109,10 @@ open_familias_handler <- function(h) {
   update_available_checkboxes(options = get_candidate_available_ids(),
                               selected = get_available())
   update_markers_tab()
+}
+
+open_settings_handler <- function(h) {
+  settings_view(parent=gui$main_window)
 }
 
 help_examples_handler <- function(h) {

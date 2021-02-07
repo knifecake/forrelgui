@@ -18,7 +18,7 @@ pedigree_input_view <- function(container = NULL) {
     container = ped_frame,
     horizontal = TRUE,
     handler = function(h) {
-      model$available <- gWidgets2::svalue(h$obj)
+      set_available(gWidgets2::svalue(h$obj))
       tkrplot::tkrreplot(gui$claim_plot)
       tkrplot::tkrreplot(gui$true_plot)
     }
