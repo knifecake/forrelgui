@@ -1,11 +1,36 @@
 
 markers_tab_view <- function() {
-  gui$markers_tab <- gWidgets2::ggroup(label = 'Markers', container = gui$tabs)
+  gui$markers_tab <- gWidgets2::gvbox(label = 'Markers', container = gui$tabs)
+  button_group <- gWidgets2::ggroup(container = gui$markers_tab)
+  gWidgets2::gbutton(
+    text = 'Disable mutations',
+    container = button_group,
+    action = 'Off',
+    handler = handle_global_mutation_change
+  )
+  gWidgets2::gbutton(
+    text = 'Enable mutations',
+    container = button_group,
+    action = 'On',
+    handler = handle_global_mutation_change
+  )
+  gWidgets2::gbutton(
+    text = 'Reset mutations',
+    container = button_group,
+    action = 'Auto',
+    handler = handle_global_mutation_change
+  )
+  
   gui$mtable <- gWidgets2::glayout(container = gui$markers_tab)
   
   update_markers_tab()
   
   gui$markers_tab
+}
+
+handle_global_mutation_change = function(h) {
+  set_all_mutations(h$action)
+  update_markers_tab()
 }
 
 update_markers_tab <- function() {
@@ -26,7 +51,7 @@ update_markers_tab <- function() {
   }
   
   # make a row for each marker
-  mutation_opts <- c('Auto', 'None', 'All')
+  mutation_opts <- c('Auto', 'Off', 'On')
   rows <- rownames(settings)
   for (i in 1:nrow(settings)) {
     gui$mtable[i + 1, 1] <- rows[i]

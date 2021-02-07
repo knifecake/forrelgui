@@ -15,12 +15,14 @@ results_tab_view <- function() {
   gui$results_tab <- gWidgets2::gvbox(container = gui$tabs, label = 'Results')
   
   # per marker table
+  ep_per_marker = simplify2array(lapply(model$result, function(x) { x$EPtotal }))
   df <- data.frame(
     Marker = get_selected_markers(),
-    'Exclusion Power' = model$result$EPperMarker,
+    'Exclusion Power' = ep_per_marker,
     stringsAsFactors = FALSE,
     check.names = FALSE
   )
+  total_EP <- 1 - prod(1 - df$`Exclusion Power`)
   
   df <- df_round(df)
   df <- df_nas_to_string(df)
@@ -29,12 +31,7 @@ results_tab_view <- function() {
   gWidgets2::size(table) <- list(column.widths = c(100, 50))
   
   gWidgets2::glabel(
-    text = paste0('Total exclusion power: ', round(model$result$EPtotal, digits = 3)),
-    container = gui$results_tab
-  )
-  
-  gWidgets2::glabel(
-    text = paste0('Time used: ', round(as.numeric(model$result$time), digits = 2), ' seconds'),
+    text = paste0('Total exclusion power: ', round(total_EP, digits = 3)),
     container = gui$results_tab
   )
   
@@ -46,15 +43,31 @@ results_tab_view <- function() {
 calculate_ep <- function() {
   if (is.null(model$claim_ped) || is.null(model$true_ped)) return()
   
-  model$result <- NULL
+  markers <- get_selected_markers()
+  print(markers, length(markers))
   
-  model$result <- forrel::exclusionPower(
-    claimPed = model$claim_ped,
-    truePed = model$true_ped, 
-    ids = model$available,
-    verbose = FALSE,
-    markers = get_selected_markers()
-  )
+  svalue(gui$status_bar) <- paste0(
+    'Calculating exclusion power: 0 of ', length(markers), ' markers done.')
   
+  # get marker settings and include
+  marker_settings_df <- data.frame(get_marker_settings())
+  marker_settings_df$Mutations[marker_settings_df$Mutations == 'Off']   <- TRUE
+  marker_settings_df$Mutations[marker_settings_df$Mutations == 'On']    <- FALSE
+  marker_settings_df$Mutations[marker_settings_df$Mutations == 'Auto']  <- NA
+  
+  model$result <- list()
+  for (i in 1:length(markers)) {
+    model$result[[markers[i]]] <- forrel::exclusionPower(
+      claimPed = model$claim_ped,
+      truePed = model$true_ped, 
+      ids = model$available,
+      markers = c(markers[i]),
+      verbose = FALSE,
+      disableMutations = marker_settings_df[markers[i], 2][[1]]
+    )
+    print(2)
+    svalue(gui$status_bar) <- paste0('Calculating exclusion power: ', i, ' of ', length(markers), ' done.')
+  }
+
   results_tab_view()
 }

@@ -31,42 +31,42 @@ epGUI()
 
 ## TODOs
 
-  - [x] Load and save projects as `.Rdata` files
-  - [x] Load Familias using `readFam`
-  - [x] Load and plot pedigrees
-  - [x] Select individuals available for genotyping
-      - [x] Filter IDs so that only those that are possible are shown
-  - [x] Load and preview frequency databases
-      - [ ] Set a minimum width for columns
-      - [ ] Auto-detect database format
-  - [ ] Load and preview reference profiles
-      - [ ] Auto-detect reference profile formats
-  - [x] Pass a project file to `epGUI` to open it directly
-  - [ ] Marker settings table
-      - [x] Exclude markers from calculation
-      - [ ] Set mutation models
-  - [x] Compute EP
-      - [ ] Show progress during calculation by running one marker at a
+-   [x] Load and save projects as `.Rdata` files
+-   [x] Load Familias using `readFam`
+-   [x] Load and plot pedigrees
+-   [x] Select individuals available for genotyping
+    -   [x] Filter IDs so that only those that are possible are shown
+-   [x] Load and preview frequency databases
+    -   [ ] Set a minimum width for columns
+    -   [ ] Auto-detect database format
+-   [x] Load and preview reference profiles
+    -   [ ] Auto-detect reference profile formats
+-   [x] Pass a project file to `epGUI` to open it directly
+-   [x] Marker settings table
+    -   [x] Exclude markers from calculation
+    -   [x] Set mutation models
+-   [x] Compute EP
+    -   [x] Show progress during calculation by running one marker at a
         time
-      - [x] Display results in a new tab and focus it
-      - [ ] Parallelize calculation by spreading different markers to
+    -   [x] Display results in a new tab and focus it
+    -   [ ] Parallelize calculation by spreading different markers to
         different cores (look into vectorization?)
-      - [ ] Show a warning if the current results tab is stale
-  - [ ] Come up with examples for testing
-      - [x] Paternity
-      - [x] Paternity with reference profiles
-      - [x] Familias .fam file with pedigrees
-      - [ ] Familias .fam file with frequency database
-      - [ ] A large frequency database
-      - [ ] Mutations to showcase mutation models
-      - [ ] Examples from the GHEP exercise
-  - [ ] Make examples available directly in the program
-  - [ ] Make testing examples loadable to demonstrate the program
-  - [ ] Project settings (file input formats, allele rounding / rogue
+    -   [ ] Show a warning if the current results tab is stale
+-   [ ] Come up with examples for testing
+    -   [x] Paternity
+    -   [x] Paternity with reference profiles
+    -   [x] Familias .fam file with pedigrees
+    -   [ ] Familias .fam file with frequency database
+    -   [ ] A large frequency database
+    -   [ ] Mutations to showcase mutation models
+    -   [ ] Examples from the GHEP exercise
+-   [x] Make examples available directly in the program
+-   [x] Make testing examples loadable to demonstrate the program
+-   [ ] Project settings (file input formats, allele rounding / rogue
     alleles)
-  - [ ] Website with help pages?
-  - [ ] Save report?
-  - [ ] Better *About epGUI* dialog
+-   [ ] Website with help pages?
+-   [ ] Save report?
+-   [x] Better *About epGUI* dialog
 
 ## LICENSE
 

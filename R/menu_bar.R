@@ -14,23 +14,30 @@ mk_menu_bar <- function() {
       gWidgets2::gseparator(),
       gWidgets2::gaction('Quit',
                          handler = function(h) gWidgets2::dispose(gui$main_window))
+    ),
+    Help = list(
+      gWidgets2::gaction('Examples', handler = help_examples_handler)
     )
   )
-
+  
   gWidgets2::gmenu(menu_items, container = gui$main_window)
 }
 
 about_epgui_handler <- function(h) {
   version <- packageVersion('forrelgui')
-
+  
   about <- gWidgets2::gwindow("About epGUI", visible = FALSE, parent = gui$main_window)
   layout <- gWidgets2::gvbox(container = about)
-
+  
   gWidgets2::glabel(paste0("epGUI v", version), container = layout)
-  gWidgets2::gbutton("Close",
-                     handler = function(h) gWidgets2::dispose(about),
-                     container = layout)
-
+  gWidgets2::glabel('epGUI is a graphical user interface for the forrel package which is part of the pedsuite', container = layout())
+  gWidgets2::gbutton(
+    "Close",
+    handler = function(h)
+      gWidgets2::dispose(about),
+    container = layout
+  )
+  
   gWidgets2::visible(about) <- TRUE
 }
 
@@ -38,7 +45,11 @@ save_project_handler <- function(h) {
   filename <- gWidgets2::gfile(text = "Save project to...",
                                type = "save",
                                initial.filename = "untitled.Rdata")
-
+  
+  if (!isTruthy(filename)) {
+    return();
+  }
+  
   save(
     model,
     file = filename
@@ -47,7 +58,11 @@ save_project_handler <- function(h) {
 
 open_project_handler <- function(h) {
   filename <- gWidgets2::gfile(text = "Choose project file...",
-                              type = "open", filter=c("Rdata"))
+                               type = "open", filter=c("Rdata"))
+  if (!isTruthy(filename)) {
+    return();
+  }
+  
   load_project_file(filename)
   redraw_pedigrees()
   update_database_description(get_database())
@@ -61,7 +76,11 @@ open_familias_handler <- function(h) {
   filename <- gWidgets2::gfile(text = 'Choose Familias .fam file...',
                                type = 'open')
   
-  # read .fam file and extract data
+  if (!isTruthy(filename)) {
+    return();
+  }
+  
+  # read Familias .fam file and extract data
   tryCatch({
     out <- forrel::readFam(filename, verbose = FALSE)
     claim_ped <- out[[1]]
@@ -82,6 +101,26 @@ open_familias_handler <- function(h) {
   })
   
   # update the UI
+  redraw_pedigrees()
+  update_database_description(get_database())
+  update_genotypes_description(get_genotypes())
+  update_available_checkboxes(options = get_candidate_available_ids(),
+                              selected = get_available())
+  update_markers_tab()
+}
+
+help_examples_handler <- function(h) {
+  filename = gWidgets2::gfile(
+    text = 'Choose example...',
+    type='open',
+    filter = c('.Rdata'),
+    initial.dir = system.file('extdata', package = 'forrelgui')
+  )
+  if (!isTruthy(filename)) {
+    return();
+  }
+  
+  load_project_file(filename)
   redraw_pedigrees()
   update_database_description(get_database())
   update_genotypes_description(get_genotypes())

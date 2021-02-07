@@ -161,6 +161,12 @@ set_marker_settings <- function(settings, marker = NULL, name = NULL) {
   NULL
 }
 
+set_all_mutations <- function(value) {
+  if (!isTruthy(value)) return();
+  
+  model$marker_settings$Mutations <- rep(value)
+}
+
 clean_available <- function() {
   model$available <- intersect(get_available(), get_candidate_available_ids())
 }

@@ -26,5 +26,8 @@ main_view  <- function() {
   # the first tab is open by default
   gWidgets2::svalue(gui$tabs) <- 1
   
+  # status bar
+  gui$status_bar <- gWidgets2::gstatusbar(container = gui$main_window)
+  
   gWidgets2::visible(gui$main_window) <- TRUE
 }
