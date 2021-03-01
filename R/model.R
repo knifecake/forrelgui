@@ -117,8 +117,12 @@ set_genotypes <- function(genotypes) {
   if (!isTruthy(genotypes)) return(NULL)
   
   model$genotypes <- genotypes
+
   
   apply_genotypes()
+  
+  # remove genotyped IDs from available list
+  model$available <- setdiff(model$available, get_genotyped_labels())
 }
 
 get_available <- function() {
@@ -176,13 +180,13 @@ clean_available <- function() {
 
 get_settings <- function() {
   if (!isTruthy(model$settings)) {
-    model$settings = list(maxExactL = Inf, nsim = 1000)
+    model$settings = list(exactMaxL = Inf, nsim = 1000, seed = NULL)
   }
   
   model$settings
 }
 
-set_settings <- function(exactMaxL = NULL, nsim = NULL) {
+set_settings <- function(exactMaxL = NULL, nsim = NULL, seed = NULL) {
   # make sure settings are initialized
   get_settings()
   
@@ -192,6 +196,10 @@ set_settings <- function(exactMaxL = NULL, nsim = NULL) {
   
   if (isTruthy(nsim)) {
     model$settings$nsim <- as.numeric(nsim)
+  }
+  
+  if (isTruthy(seed)) {
+    model$settings$seed <- as.numeric(seed)
   }
 }
 

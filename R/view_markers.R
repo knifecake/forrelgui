@@ -1,6 +1,6 @@
 
 markers_tab_view <- function() {
-  gui$markers_tab <- gWidgets2::gvbox(label = 'Markers', container = gui$tabs)
+  gui$markers_tab <- gWidgets2::gvbox(label = 'Markers', use.scrollwindow = TRUE, container = gui$tabs)
   button_group <- gWidgets2::ggroup(container = gui$markers_tab)
   gWidgets2::gbutton(
     text = 'Disable mutations',

@@ -7,6 +7,9 @@ df_modal_view <- function(df, title = "Preview") {
   # substitute NA values for a string, since gtable does not understand them
   df <- df_nas_to_string(df)
   
+  # add row names as the first column
+  df <- cbind(Name = rownames(df), data.frame(df, row.names=NULL))
+  
   w <- gWidgets2::gwindow(title = title,
                           width = 700,
                           height = 400,
@@ -15,7 +18,7 @@ df_modal_view <- function(df, title = "Preview") {
   t <- gWidgets2::gtable(df, container = w)
   
   gWidgets2::size(t) <- list(
-    column.widths = replicate(length(colnames(df)), 10 * max(sapply(colnames(df), nchar)))
+    column.widths = sapply(colnames(df), function(item) { min(100, max(50, 30 * nchar(item))) })
   )
   
   gWidgets2::visible(w) <- TRUE

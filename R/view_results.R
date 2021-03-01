@@ -64,11 +64,11 @@ calculate_ep <- function() {
       ids = model$available,
       markers = c(markers[i]),
       verbose = FALSE,
-      disableMutations = marker_settings_df[markers[i], 2][[1]],
+      disableMutations = !as.logical(marker_settings_df[markers[i], 2][[1]]),
       exactMaxL = settings$exactMaxL,
-      nsim = settings$nsim
+      nsim = settings$nsim,
+      seed = settings$seed
     )
-    print(2)
     svalue(gui$status_bar) <- paste0('Calculating exclusion power: ', i, ' of ', length(markers), ' done.')
   }
 

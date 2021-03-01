@@ -41,6 +41,7 @@ epGUI()
     -   [ ] Auto-detect database format
 -   [x] Load and preview reference profiles
     -   [ ] Auto-detect reference profile formats
+    -   [ ] Show profile IDs
 -   [x] Pass a project file to `epGUI` to open it directly
 -   [x] Marker settings table
     -   [x] Exclude markers from calculation
@@ -55,11 +56,12 @@ epGUI()
 -   [ ] Come up with examples for testing
     -   [x] Paternity
     -   [x] Paternity with reference profiles
-    -   [x] Familias .fam file with pedigrees
-    -   [ ] Familias .fam file with frequency database
+    -   [x] Familias .fam file with pedigrees and frequency database
+    -   [ ] Familias .fam file only with frequency database
     -   [ ] A large frequency database
     -   [ ] Mutations to showcase mutation models
     -   [ ] Examples from the GHEP exercise
+    -   [ ] Example with Xchrom markers
 -   [x] Make examples available directly in the program
 -   [x] Make testing examples loadable to demonstrate the program
 -   [x] Project settings (file input formats, allele rounding / rogue

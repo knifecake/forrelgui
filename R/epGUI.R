@@ -5,14 +5,11 @@
 #'
 #' @export
 #'
-epGUI <- function(save_file = NULL) {
+epGUI <- function() {
   # gWidgets2::guiToolkit('tcltk')
   options('guiToolkit' = 'tcltk')
 
   mk_env()
-  
-  # if we were called with a save_file, load it
-  if (isTruthy(save_file)) load_project_file(save_file)
 
   # create the GUI
   main_view()

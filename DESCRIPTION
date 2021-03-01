@@ -17,4 +17,5 @@ Imports:
     tkrplot (>= 0.0.24)
 RoxygenNote: 7.1.1
 Suggests: 
-    poibin (>= 1.5)
+    poibin (>= 1.5),
+    writexl

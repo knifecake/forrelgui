@@ -32,7 +32,7 @@ about_epgui_handler <- function(h) {
   layout <- gWidgets2::gvbox(container = about)
   
   gWidgets2::glabel(paste0("epGUI v", version), container = layout)
-  gWidgets2::glabel('epGUI is a graphical user interface for the forrel package which is part of the pedsuite', container = layout())
+  gWidgets2::glabel('epGUI is a graphical user interface for the forrel package which is part of the pedsuite', container = layout)
   gWidgets2::gbutton(
     "Close",
     handler = function(h)
