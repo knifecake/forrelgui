@@ -73,11 +73,14 @@ apply_locus_attributes <- function() {
 }
 
 apply_genotypes <- function() {
-  if (!isTruthy(model$claim_ped) || !isTruthy(model$genotypes)) return(NULL)
+  if (!isTruthy(model$claim_ped)) return(NULL)
   
-  model$claim_ped <- pedtools::setAlleles(model$claim_ped, alleles = model$genotypes)
-  
-  NULL
+  if (!isTruthy(model$genotypes)) {
+    # remove genotypes
+    model$claim_ped <- pedtools::setAlleles(model$claim_ped, alleles = 0)
+  } else {
+    model$claim_ped <- pedtools::setAlleles(model$claim_ped, alleles = model$genotypes)
+  }
 }
 
 get_database <- function(mode = 'ladder') {
@@ -108,7 +111,7 @@ get_genotypes <- function() {
   if (!isTruthy(model$genotypes)) return(NULL);
   
   data.frame(model$genotypes,
-             row.names = rownames(model$references),
+             row.names = rownames(model$genotypes),
              stringsAsFactors = FALSE,
              check.names = FALSE)
 }
@@ -124,6 +127,13 @@ set_genotypes <- function(genotypes) {
   # remove genotyped IDs from available list
   model$available <- setdiff(model$available, get_genotyped_labels())
 }
+
+remove_genotypes <- function() {
+  model$genotypes <- NULL
+  
+  apply_genotypes()
+}
+
 
 get_available <- function() {
   model$available
@@ -209,11 +219,11 @@ set_settings <- function(exactMaxL = NULL, nsim = NULL, seed = NULL) {
 #'   returns an error message
 #'   
 can_calculate_ep <- function() {
-  if (!isTruthy(model$ped_claim))
+  if (!isTruthy(model$claim_ped))
     return('Missing claim pedigree')
-  if (!isTruthy(model$ped_true))
+  if (!isTruthy(model$true_ped))
     return('Missing true pedigree')
-  if (!isTruthy(model$available))
+  if (!isTruthy(model$available) || length(model$available) == 0)
     return('No individuals were marked as available for genotyping')
   if (!isTruthy(model$database))
     return('No allele frequency database provided')

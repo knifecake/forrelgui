@@ -5,7 +5,6 @@ results_tab_view <- function() {
     gWidgets2::dispose(gui$tabs)
   }
   
-  print(model$result)
   if (is.null(model$result)) {
     # if there are no results, do not add the tab and make
     # sure we're in the data entry tab
@@ -42,13 +41,16 @@ results_tab_view <- function() {
 
 
 calculate_ep <- function() {
-  if (is.null(model$claim_ped) || is.null(model$true_ped)) return()
+  check <- can_calculate_ep()
+  if (check != TRUE) {
+    gWidgets2::gmessage(check, title='Cannot calculate exclusion power', icon='error', parent = gui$main_window)
+    return();
+  }
   
   markers <- get_selected_markers()
   settings <- get_settings()
   
-  svalue(gui$status_bar) <- paste0(
-    'Calculating exclusion power: 0 of ', length(markers), ' markers done.')
+  svalue(gui$status_bar) <- 'Calculating exclusion power...'
   
   # get marker settings and include
   marker_settings_df <- data.frame(get_marker_settings())
@@ -69,8 +71,8 @@ calculate_ep <- function() {
       nsim = settings$nsim,
       seed = settings$seed
     )
-    svalue(gui$status_bar) <- paste0('Calculating exclusion power: ', i, ' of ', length(markers), ' done.')
   }
 
+  svalue(gui$status_bar) <- 'Done!'
   results_tab_view()
 }

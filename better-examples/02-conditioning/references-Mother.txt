@@ -1,0 +1,4 @@
+"M1.1"	"M1.2"
+"AF"	NA	NA
+"Mother"	"A"	"A"
+"CH"	NA	NA

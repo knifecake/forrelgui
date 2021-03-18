@@ -45,7 +45,6 @@ mk_pedfile_handler <- function(dest = c('claim', 'true')) {
       update_available_checkboxes(options = get_candidate_available_ids(),
                                   selected = get_available())
     }, error = function(e) {
-      print(e)
       gWidgets2::gmessage(
         "The pedigree file you supplied does not appear to be a valid .ped file.",
         title = "Invalid .ped file",

@@ -1,0 +1,5 @@
+famid	id	fid	mid	sex
+"1"	"Father"	0	0	1
+"1"	"Mother"	0	0	2	
+"1"	"CH"	"Father"	"Mother"	1
+"2"	"AF"	0	0	1
